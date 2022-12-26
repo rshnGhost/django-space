@@ -1,0 +1,27 @@
+name: Tests (windows)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    name: Windows, Python
+    steps:
+      - name: Set up Python
+        uses: actions/checkout@v3
+
+      - name: Install and upgrade packaging tools
+        run: |
+          python -m pip install --upgrade pip django-space
+          mkdir testing
+
+      - name: Run django-space command and Run api test(s)
+        working-directory: ./testing
+        run: |
+          Start-Process django-space
+          Start-Sleep -s 30
+          python test/test_api.py
+        shell: powershell
